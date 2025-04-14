@@ -90,3 +90,21 @@ sortDescBtn.addEventListener('click', () => {
     const sorted = [...allFilms].sort((a, b) => parseInt(b.rt_score) - parseInt(a.rt_score));
     displayFilms(sorted);
 });
+
+
+const toggleButton = document.getElementById('toggle-top-films');
+const topFilmsSection = document.getElementById('top-films');
+
+let isVisible = false;
+
+toggleButton.addEventListener('click', () => {
+    isVisible = !isVisible;
+
+    if (isVisible) {
+        topFilmsSection.classList.remove('hidden');
+        toggleButton.textContent = '🎬 Masquer les Top Films';
+    } else {
+        topFilmsSection.classList.add('hidden');
+        toggleButton.textContent = '🎬 Afficher les Top Films';
+    }
+});
