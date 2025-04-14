@@ -1,6 +1,8 @@
 const filmList = document.getElementById('film-list');
 const topFilmsContainer = document.getElementById('top-films');
 const searchInput = document.getElementById('search-input');
+const sortAscBtn = document.getElementById('sort-asc');
+const sortDescBtn = document.getElementById('sort-desc');
 let allFilms = [];
 
 
@@ -13,8 +15,8 @@ fetch('https://ghibliapi.vercel.app/films')
     })
     .catch(error => {
         console.error('Erreur lors du chargement des films :', error);
-        filmList.innerHTML = '<p class="text-red-400">Erreur de chargement des films 🫠</p>';
-        topFilmsContainer.innerHTML = '<p class="text-red-400">Impossible de charger les Top Films 😢</p>';
+        filmList.innerHTML = '<p class="text-red-400">Erreur de chargement des films </p>';
+        topFilmsContainer.innerHTML = '<p class="text-red-400">Impossible de charger les Top Films </p>';
     });
 
 
@@ -33,7 +35,7 @@ function createFilmCard(film) {
       <div class="flip-back bg-indigo-900 bg-opacity-90 p-6">
         <h3 class="text-2xl font-bold mb-2">Résumé</h3>
         <p class="text-sm">${film.description.substring(0, 200)}...</p>
-        <p class="mt-4 text-xl text-yellow-300">Score : ${film.rt_score} ⭐</p>
+        <p class="mt-4 text-xl text-yellow-300">Score : ${(film.rt_score / 10).toFixed(1)} ⭐</p>
       </div>
     </div>
   `;
@@ -44,7 +46,7 @@ function displayFilms(films) {
     filmList.innerHTML = '';
 
     if (films.length === 0) {
-        filmList.innerHTML = `<p class="text-yellow-400 col-span-3">Aucun film trouvé 😢</p>`;
+        filmList.innerHTML = `<p class="text-yellow-400 col-span-3">Aucun film trouvé </p>`;
         return;
     }
 
@@ -73,4 +75,18 @@ searchInput.addEventListener('input', () => {
     );
 
     displayFilms(filtered);
+});
+
+
+
+
+sortAscBtn.addEventListener('click', () => {
+    const sorted = [...allFilms].sort((a, b) => parseInt(a.rt_score) - parseInt(b.rt_score));
+    displayFilms(sorted);
+});
+
+
+sortDescBtn.addEventListener('click', () => {
+    const sorted = [...allFilms].sort((a, b) => parseInt(b.rt_score) - parseInt(a.rt_score));
+    displayFilms(sorted);
 });
